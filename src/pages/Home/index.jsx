@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 
 import logoImg from '../../assets/logo.svg';
 import './style.css';
@@ -15,7 +16,14 @@ export function HomePage() {
     setDisabledButton,
     handleOpen,
     openModal,
+    redirect,
   } = useContext(AppContext);
+
+  {
+    if (redirect) {
+      return <Redirect to="/quiz" />;
+    }
+  }
 
   return (
     <Grid container direction="column" alignItems="center" justify="center">
