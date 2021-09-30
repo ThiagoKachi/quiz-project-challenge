@@ -10,6 +10,8 @@ export function Provider({ children }) {
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [quizQuestions, setQuizQuestions] = useState([]);
+  const [redirect, setRedirect] = useState(false);
+  // const [correctAnswers, setCorrectAnswers] = useState();
 
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
@@ -26,7 +28,13 @@ export function Provider({ children }) {
     setLoading(true);
     const generateQuiz = await startQuiz(qtd);
     setQuizQuestions(generateQuiz);
+    setRedirect(true);
     setLoading(false);
+    console.log(generateQuiz);
+  }
+
+  function scrollBy() {
+    window.scrollBy({ top: 800, behavior: 'smooth' });
   }
 
   const infosToShare = {
@@ -39,6 +47,9 @@ export function Provider({ children }) {
     startGame,
     loading,
     quizQuestions,
+    redirect,
+    scrollBy,
+    // correctAnswers,
   };
 
   return (
