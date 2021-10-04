@@ -1,35 +1,34 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
-import { Grid, Box } from '@material-ui/core';
+import { Grid, Box, Button } from '@material-ui/core';
 
 import './styles.css';
 import { AppContext } from '../../contexts/AppContext';
 
 export function Question() {
-  const { scrollBy, correctAnswers, quizQuestions } = useContext(AppContext);
-  const [questionNumber, setQuestionNumber] = useState(0);
-  // Quando chegar no length total, mostrar página de resultado
+  const { quizQuestions, questionNumber, verifyAnswerResult, nextQuestion } =
+    useContext(AppContext);
 
   return (
     <Grid container direction="column" alignItems="center" justify="center">
       <Box
         sx={{
           bgcolor: 'var(--white)',
-          height: '80vh',
+          height: '100vh',
           width: '800px',
-          marginTop: '20px',
-          marginBottom: '20px',
           border: '2px solid var(--black)',
           borderRadius: '4px',
           padding: '0 50px',
         }}
       >
         <h1 className="question-category">
-          <span onClick={correctAnswers} className="category">
-            Category:
+          <span className="category">
+            {quizQuestions[questionNumber].category}
           </span>{' '}
-          {quizQuestions[questionNumber].category}
+          <span className="number-of-questions">
+            Question {questionNumber + 1}/{quizQuestions.length}
+          </span>
         </h1>
         <p className="question-type">
           <span className="type">Type: </span>
@@ -46,26 +45,36 @@ export function Question() {
         <span className="question">
           {quizQuestions[questionNumber].question}
         </span>
-        <div className="question-answers" onClick={() => scrollBy()}>
+        <div className="question-answers">
           {quizQuestions[questionNumber].incorrect_answers
-            .concat(quizQuestions[0].correct_answer)
+            .concat(quizQuestions[questionNumber].correct_answer)
             .sort()
-            .map((incorrect) => (
-              <label htmlFor="teste" key={incorrect}>
-                {incorrect}
-                <input
-                  type="radio"
-                  name="rteste"
-                  id="teste"
-                  value={incorrect}
-                  onChange={(e) => console.log(e.target.value)}
-                />
-              </label>
+            .map((question) => (
+              <div key={question} className="teste">
+                <label htmlFor="question-input" className="question-label">
+                  {question}
+                  <input
+                    type="radio"
+                    name="question"
+                    id="question-input"
+                    value={question}
+                    onChange={verifyAnswerResult}
+                  />
+                </label>
+              </div>
             ))}
         </div>
-        <button onClick={() => setQuestionNumber(questionNumber + 1)}>
-          Próximo
-        </button>
+        <div className="next-question">
+          <Button
+            variant="contained"
+            color="success"
+            size="large"
+            // onClick={() => setQuestionNumber(questionNumber + 1)}
+            onClick={nextQuestion}
+          >
+            Próximo
+          </Button>
+        </div>
       </Box>
     </Grid>
   );
@@ -74,7 +83,3 @@ export function Question() {
 Question.propTypes = {
   question: PropTypes.object,
 };
-
-// <span className="questions" key={incorrect} value={incorrect}>
-// ({incorrect})
-// </span>
