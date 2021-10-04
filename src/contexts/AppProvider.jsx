@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { AppContext } from './AppContext';
 
 import { startQuiz } from '../services';
+import { useHistory } from 'react-router';
 
 export function Provider({ children }) {
   const [questionQtd, setQuestionQtd] = useState(0);
@@ -11,7 +12,6 @@ export function Provider({ children }) {
   const [loading, setLoading] = useState(false);
   const [quizQuestions, setQuizQuestions] = useState([]);
   const [redirect, setRedirect] = useState(false);
-  // const [correctAnswers, setCorrectAnswers] = useState();
 
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
@@ -33,8 +33,27 @@ export function Provider({ children }) {
     console.log(generateQuiz);
   }
 
-  function scrollBy() {
-    window.scrollBy({ top: 800, behavior: 'smooth' });
+  const [questionNumber, setQuestionNumber] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+
+  const history = useHistory();
+
+  function verifyAnswerResult(e) {
+    if (e.target.value === quizQuestions[questionNumber].correct_answer) {
+      console.log('Correto');
+      return setCorrectAnswers(correctAnswers + 1);
+    } else {
+      console.log('Incorreto');
+    }
+  }
+
+  function nextQuestion() {
+    const quest = questionNumber + 1;
+    if (quest < quizQuestions.length) {
+      setQuestionNumber(questionNumber + 1);
+    } else {
+      history.push('/results');
+    }
   }
 
   const infosToShare = {
@@ -48,8 +67,9 @@ export function Provider({ children }) {
     loading,
     quizQuestions,
     redirect,
-    scrollBy,
-    // correctAnswers,
+    verifyAnswerResult,
+    nextQuestion,
+    questionNumber,
   };
 
   return (
