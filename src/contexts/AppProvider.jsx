@@ -30,7 +30,6 @@ export function Provider({ children }) {
     setQuizQuestions(generateQuiz);
     setRedirect(true);
     setLoading(false);
-    console.log(generateQuiz);
   }
 
   const [questionNumber, setQuestionNumber] = useState(0);
@@ -40,10 +39,7 @@ export function Provider({ children }) {
 
   function verifyAnswerResult(e) {
     if (e.target.value === quizQuestions[questionNumber].correct_answer) {
-      console.log('Correto');
       return setCorrectAnswers(correctAnswers + 1);
-    } else {
-      console.log('Incorreto');
     }
   }
 
@@ -70,6 +66,7 @@ export function Provider({ children }) {
     verifyAnswerResult,
     nextQuestion,
     questionNumber,
+    correctAnswers,
   };
 
   return (
