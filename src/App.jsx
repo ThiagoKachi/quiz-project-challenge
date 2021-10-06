@@ -10,9 +10,9 @@ import './index.css';
 function App() {
   return (
     <Switch>
-      <Route exact path="/" component={HomePage} />
       <Route exact path="/quiz" component={QuizPage} />
       <Route exact path="/results" component={Results} />
+      <Route exact path="/" component={HomePage} />
     </Switch>
   );
 }

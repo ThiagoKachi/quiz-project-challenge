@@ -9,6 +9,7 @@ import { AppContext } from '../../contexts/AppContext';
 export function Question() {
   const { quizQuestions, questionNumber, verifyAnswerResult, nextQuestion } =
     useContext(AppContext);
+  // Habilitar botão de próxima pergunta somente se alguma alternativa estiver selecionada
 
   return (
     <Grid container direction="column" alignItems="center" justify="center">
@@ -19,7 +20,7 @@ export function Question() {
           width: '800px',
           border: '2px solid var(--black)',
           borderRadius: '4px',
-          padding: '0 50px',
+          padding: '0 30px',
         }}
       >
         <h1 className="question-category">
@@ -50,18 +51,20 @@ export function Question() {
             .concat(quizQuestions[questionNumber].correct_answer)
             .sort()
             .map((question) => (
-              <div key={question} className="teste">
-                <label htmlFor="question-input" className="question-label">
-                  {question}
-                  <input
-                    type="radio"
-                    name="question"
-                    id="question-input"
-                    value={question}
-                    onChange={verifyAnswerResult}
-                  />
-                </label>
-              </div>
+              <label
+                key={question}
+                htmlFor="question-input"
+                className="question-label"
+              >
+                {question}
+                <input
+                  type="radio"
+                  name="question"
+                  id="question-input"
+                  value={question}
+                  onChange={verifyAnswerResult}
+                />
+              </label>
             ))}
         </div>
         <div className="next-question">
@@ -69,7 +72,6 @@ export function Question() {
             variant="contained"
             color="success"
             size="large"
-            // onClick={() => setQuestionNumber(questionNumber + 1)}
             onClick={nextQuestion}
           >
             Próximo
